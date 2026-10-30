@@ -11,15 +11,23 @@ namespace BankAccountApp
 
     public class BankAccount
     {
+        private static int nextAccountNumber = 1000000;
+
         private string accountNumber;
         private decimal balance;
         private AccountType type;
 
-        public void SetData(string number, decimal initialBalance, AccountType accountType)
+        public BankAccount(decimal initialBalance, AccountType accountType)
         {
-            accountNumber = number;
+            accountNumber = GenerateAccountNumber();
             balance = initialBalance;
             type = accountType;
+        }
+
+        private static string GenerateAccountNumber()
+        {
+            nextAccountNumber++;
+            return nextAccountNumber.ToString();
         }
 
         public string GetAccountNumber()
@@ -57,37 +65,57 @@ namespace BankAccountApp
         }
     }
 
-    class Program 
+    class Program
     {
         static void Main(string[] args)
         {
-            BankAccount myAccount = new BankAccount();
-
-            Console.Write("Введите номер счета: ");
-            string number = Console.ReadLine();
-
             Console.Write("Введите баланс: ");
-            decimal balance = decimal.Parse(Console.ReadLine());
+            decimal balance1 = decimal.Parse(Console.ReadLine());
 
             Console.WriteLine("Выберите тип счета:");
             Console.WriteLine("1 - Текущий");
             Console.WriteLine("2 - Сберегательный");
             Console.WriteLine("3 - Депозитный");
             Console.Write("Ваш выбор: ");
-            int choice = int.Parse(Console.ReadLine());
+            int choice1 = int.Parse(Console.ReadLine());
 
-            AccountType type;
-            switch (choice)
+            AccountType type1;
+            switch (choice1)
             {
-                case 1: type = AccountType.Current; break;
-                case 2: type = AccountType.Savings; break;
-                case 3: type = AccountType.Deposit; break;
-                default: type = AccountType.Current; break;
+                case 1: type1 = AccountType.Current; break;
+                case 2: type1 = AccountType.Savings; break;
+                case 3: type1 = AccountType.Deposit; break;
+                default: type1 = AccountType.Current; break;
             }
 
-            myAccount.SetData(number, balance, type);
+            BankAccount account1 = new BankAccount(balance1, type1);
             Console.WriteLine();
-            myAccount.PrintInfo();
+            account1.PrintInfo();
+
+            Console.WriteLine();
+
+            Console.Write("Введите баланс: ");
+            decimal balance2 = decimal.Parse(Console.ReadLine());
+
+            Console.WriteLine("Выберите тип счета:");
+            Console.WriteLine("1 - Текущий");
+            Console.WriteLine("2 - Сберегательный");
+            Console.WriteLine("3 - Депозитный");
+            Console.Write("Ваш выбор: ");
+            int choice2 = int.Parse(Console.ReadLine());
+
+            AccountType type2;
+            switch (choice2)
+            {
+                case 1: type2 = AccountType.Current; break;
+                case 2: type2 = AccountType.Savings; break;
+                case 3: type2 = AccountType.Deposit; break;
+                default: type2 = AccountType.Current; break;
+            }
+
+            BankAccount account2 = new BankAccount(balance2, type2);
+            Console.WriteLine();
+            account2.PrintInfo();
 
             Console.ReadKey();
         }
