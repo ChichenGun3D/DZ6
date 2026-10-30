@@ -45,6 +45,33 @@ namespace BankAccountApp
             return type;
         }
 
+        public void Deposit(decimal amount)
+        {
+            if (amount <= 0)
+            {
+                Console.WriteLine("Сумма пополнения должна быть положительной.");
+                return;
+            }
+            balance += amount;
+            Console.WriteLine($"Счет пополнен на {amount:C}. Текущий баланс: {balance:C}");
+        }
+
+        public void Withdraw(decimal amount)
+        {
+            if (amount <= 0)
+            {
+                Console.WriteLine("Сумма снятия должна быть положительной.");
+                return;
+            }
+            if (amount > balance)
+            {
+                Console.WriteLine($"Недостаточно средств. Запрошено: {amount:C}, доступно: {balance:C}");
+                return;
+            }
+            balance -= amount;
+            Console.WriteLine($"Снято со счета: {amount:C}. Текущий баланс: {balance:C}");
+        }
+
         public void PrintInfo()
         {
             Console.WriteLine("--- Информация о счете ---");
@@ -69,7 +96,7 @@ namespace BankAccountApp
     {
         static void Main(string[] args)
         {
-            Console.Write("Введите баланс: ");
+            Console.Write("Введите начальный баланс: ");
             decimal balance1 = decimal.Parse(Console.ReadLine());
 
             Console.WriteLine("Выберите тип счета:");
@@ -93,29 +120,17 @@ namespace BankAccountApp
             account1.PrintInfo();
 
             Console.WriteLine();
+            Console.Write("Введите сумму для пополнения: ");
+            decimal depositAmount = decimal.Parse(Console.ReadLine());
+            account1.Deposit(depositAmount);
 
-            Console.Write("Введите баланс: ");
-            decimal balance2 = decimal.Parse(Console.ReadLine());
-
-            Console.WriteLine("Выберите тип счета:");
-            Console.WriteLine("1 - Текущий");
-            Console.WriteLine("2 - Сберегательный");
-            Console.WriteLine("3 - Депозитный");
-            Console.Write("Ваш выбор: ");
-            int choice2 = int.Parse(Console.ReadLine());
-
-            AccountType type2;
-            switch (choice2)
-            {
-                case 1: type2 = AccountType.Current; break;
-                case 2: type2 = AccountType.Savings; break;
-                case 3: type2 = AccountType.Deposit; break;
-                default: type2 = AccountType.Current; break;
-            }
-
-            BankAccount account2 = new BankAccount(balance2, type2);
             Console.WriteLine();
-            account2.PrintInfo();
+            Console.Write("Введите сумму для снятия: ");
+            decimal withdrawAmount = decimal.Parse(Console.ReadLine());
+            account1.Withdraw(withdrawAmount);
+
+            Console.WriteLine();
+            account1.PrintInfo();
 
             Console.ReadKey();
         }
