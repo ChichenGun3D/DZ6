@@ -1,94 +1,94 @@
 ﻿using System;
 
-namespace BankAccountApp
+namespace BuildingApp
 {
-    public enum AccountType
+    public class Building
     {
-        Current,
-        Savings,
-        Deposit
-    }
+        private static int lastBuildingNumber = 0;
 
-    public class BankAccount
-    {
-        private static int nextAccountNumber = 1000000;
+        private string buildingNumber;
+        private double height;
+        private int floors;
+        private int apartments;
+        private int entrances;
 
-        private string accountNumber;
-        private decimal balance;
-        private AccountType type;
-
-        public BankAccount(decimal initialBalance, AccountType accountType)
+        public Building(double height, int floors, int apartments, int entrances)
         {
-            accountNumber = GenerateAccountNumber();
-            balance = initialBalance;
-            type = accountType;
+            buildingNumber = GenerateBuildingNumber();
+            this.height = height;
+            this.floors = floors;
+            this.apartments = apartments;
+            this.entrances = entrances;
         }
 
-        private static string GenerateAccountNumber()
+        private static string GenerateBuildingNumber()
         {
-            nextAccountNumber++;
-            return nextAccountNumber.ToString();
+            lastBuildingNumber++;
+            return lastBuildingNumber.ToString();
         }
 
-        public string GetAccountNumber()
+        public void SetData(double height, int floors, int apartments, int entrances)
         {
-            return accountNumber;
+            this.height = height;
+            this.floors = floors;
+            this.apartments = apartments;
+            this.entrances = entrances;
         }
 
-        public decimal GetBalance()
+        public string GetBuildingNumber()
         {
-            return balance;
+            return buildingNumber;
         }
 
-        public AccountType GetAccountType()
+        public double GetHeight()
         {
-            return type;
+            return height;
         }
 
-        public void Deposit(decimal amount)
+        public int GetFloors()
         {
-            if (amount <= 0)
-            {
-                Console.WriteLine("Сумма пополнения должна быть положительной.");
-                return;
-            }
-            balance += amount;
-            Console.WriteLine($"Счет пополнен на {amount:C}. Текущий баланс: {balance:C}");
+            return floors;
         }
 
-        public void Withdraw(decimal amount)
+        public int GetApartments()
         {
-            if (amount <= 0)
-            {
-                Console.WriteLine("Сумма снятия должна быть положительной.");
-                return;
-            }
-            if (amount > balance)
-            {
-                Console.WriteLine($"Недостаточно средств. Запрошено: {amount:C}, доступно: {balance:C}");
-                return;
-            }
-            balance -= amount;
-            Console.WriteLine($"Снято со счета: {amount:C}. Текущий баланс: {balance:C}");
+            return apartments;
+        }
+
+        public int GetEntrances()
+        {
+            return entrances;
+        }
+
+        public double GetFloorHeight()
+        {
+            if (floors == 0) return 0;
+            return height / floors;
+        }
+
+        public double GetApartmentsPerEntrance()
+        {
+            if (entrances == 0) return 0;
+            return (double)apartments / entrances;
+        }
+
+        public double GetApartmentsPerFloor()
+        {
+            if (floors == 0) return 0;
+            return (double)apartments / floors;
         }
 
         public void PrintInfo()
         {
-            Console.WriteLine("--- Информация о счете ---");
-            Console.WriteLine($"Номер счета: {accountNumber}");
-            Console.WriteLine($"Баланс: {balance:C}");
-            Console.WriteLine($"Тип счета: {GetTypeName(type)}");
-        }
-
-        private string GetTypeName(AccountType t)
-        {
-            switch (t)
-            {
-                case AccountType.Current: return "Текущий";
-                case AccountType.Savings: return "Сберегательный";
-                case AccountType.Deposit: return "Депозитный";
-                default: return "Неизвестно";
-            }
+            Console.WriteLine("--- Информация о здании ---");
+            Console.WriteLine($"Уникальный номер здания: {buildingNumber}");
+            Console.WriteLine($"Высота: {height} м");
+            Console.WriteLine($"Этажность: {floors}");
+            Console.WriteLine($"Количество квартир: {apartments}");
+            Console.WriteLine($"Количество подъездов: {entrances}");
+            Console.WriteLine($"Высота этажа: {GetFloorHeight():F2} м");
+            Console.WriteLine($"Квартир в подъезде: {GetApartmentsPerEntrance():F2}");
+            Console.WriteLine($"Квартир на этаже: {GetApartmentsPerFloor():F2}");
         }
     }
 
@@ -96,41 +96,39 @@ namespace BankAccountApp
     {
         static void Main(string[] args)
         {
-            Console.Write("Введите начальный баланс: ");
-            decimal balance1 = decimal.Parse(Console.ReadLine());
+            Console.Write("Введите высоту здания (м): ");
+            double height1 = double.Parse(Console.ReadLine());
 
-            Console.WriteLine("Выберите тип счета:");
-            Console.WriteLine("1 - Текущий");
-            Console.WriteLine("2 - Сберегательный");
-            Console.WriteLine("3 - Депозитный");
-            Console.Write("Ваш выбор: ");
-            int choice1 = int.Parse(Console.ReadLine());
+            Console.Write("Введите количество этажей: ");
+            int floors1 = int.Parse(Console.ReadLine());
 
-            AccountType type1;
-            switch (choice1)
-            {
-                case 1: type1 = AccountType.Current; break;
-                case 2: type1 = AccountType.Savings; break;
-                case 3: type1 = AccountType.Deposit; break;
-                default: type1 = AccountType.Current; break;
-            }
+            Console.Write("Введите количество квартир: ");
+            int apartments1 = int.Parse(Console.ReadLine());
 
-            BankAccount account1 = new BankAccount(balance1, type1);
+            Console.Write("Введите количество подъездов: ");
+            int entrances1 = int.Parse(Console.ReadLine());
+
+            Building building1 = new Building(height1, floors1, apartments1, entrances1);
             Console.WriteLine();
-            account1.PrintInfo();
+            building1.PrintInfo();
 
             Console.WriteLine();
-            Console.Write("Введите сумму для пополнения: ");
-            decimal depositAmount = decimal.Parse(Console.ReadLine());
-            account1.Deposit(depositAmount);
 
-            Console.WriteLine();
-            Console.Write("Введите сумму для снятия: ");
-            decimal withdrawAmount = decimal.Parse(Console.ReadLine());
-            account1.Withdraw(withdrawAmount);
+            Console.Write("Введите высоту здания (м): ");
+            double height2 = double.Parse(Console.ReadLine());
 
+            Console.Write("Введите количество этажей: ");
+            int floors2 = int.Parse(Console.ReadLine());
+
+            Console.Write("Введите количество квартир: ");
+            int apartments2 = int.Parse(Console.ReadLine());
+
+            Console.Write("Введите количество подъездов: ");
+            int entrances2 = int.Parse(Console.ReadLine());
+
+            Building building2 = new Building(height2, floors2, apartments2, entrances2);
             Console.WriteLine();
-            account1.PrintInfo();
+            building2.PrintInfo();
 
             Console.ReadKey();
         }
